@@ -152,7 +152,7 @@ document.querySelector("#create-button").addEventListener('click', ()=> {
                 canvas.height = h;
                 var ctx = canvas.getContext("2d");
                 ctx.drawImage(srcImage, 0, 0, w, h);
-                const data = ctx.getImageData(0, 0, w, h).data;
+                let data = ctx.getImageData(0, 0, w, h).data;
                 for (let j = 0, i = 0; i < data.length; ++j, i += 4) {
                     const value = (data[i] + data[i + 1] + data[i + 2]) / 3;
                     values[j] = value;
