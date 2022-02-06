@@ -1,0 +1,102 @@
+* {
+    font-family: monospace, Arial, Helvetica, sans-serif
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+}
+
+h2 {
+    margin: 5px;
+}
+
+canvas {
+    width: 640px;
+    height: 480px;
+}
+
+.input-button {
+    text-align: center;
+    box-sizing: border-box;
+    font-size: 1em;
+    width: 125px;
+    height: 100%;
+    padding: 5px;
+    background-color: #ebebeb;
+    border: 1px solid #646464;
+    border-radius: 5px;
+    -webkit-transition: 0.3s;
+    -ms-transition: 0.3s;
+    transition: 0.3s;
+}
+
+.input-button:hover {
+    background-color: #d1d1d1;
+}
+
+.control {
+    margin: 5px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.container {
+    box-sizing: border-box;
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.img-container {
+    margin: 20px 20px;
+    width: 200px;
+    height: 200px;
+    border: 1px solid gray;
+    border-radius: 10px;
+}
+
+.error {
+    background-color: rgb(231, 172, 172);
+    color: red;
+    border: 1px solid red;
+    padding: 2px;
+    border-radius: 5px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.state {
+    width: 30px;
+}
+
+#create-button {
+    margin: 5px;
+}
+
+fieldset {
+    margin: 5px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.controls {
+    display: flex;
+    flex-direction: row;
+}
+
+input[type="number"] {
+    text-align: left;
+}
