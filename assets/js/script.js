@@ -1,8 +1,29 @@
 var state = 0, srcImage, images = [];
 
+const createButton = document.querySelector("#create-button");
+
+const imgWidth    = document.querySelector("#image-width");
+const imgheight   = document.querySelector("#image-height");
+const pixelWidth  = document.querySelector("#pixel-width");
+const pixelHeight = document.querySelector("#pixel-height");
+
+
 const update = () => {
-    document.querySelector("#create-button").disabled = (state !== 3);
+    createButton.disabled = (state !== 3);
+
+    const w = parseInt(imgWidth.value);
+    const h = parseInt(imgheight.value);
+    const siw = parseInt(pixelWidth.value);
+    const sih = parseInt(pixelHeight.value);
+
+    document.querySelector("#info").innerText = `(${w * siw} x ${h * sih})`;
 }
+
+
+imgWidth  .addEventListener("change", update);
+imgheight .addEventListener("change", update);
+pixelWidth.addEventListener("change", update);
+pixelHeight.addEventListener("change", update);
 
 update();
 
@@ -116,11 +137,10 @@ document.querySelector("#create-button").addEventListener('click', ()=> {
 
             try {
 
-                const w = parseInt(document.querySelector("#image-width").value);
-                const h = parseInt(document.querySelector("#image-height").value);
-            
-                const siw = parseInt(document.querySelector("#pixel-width").value);
-                const sih = parseInt(document.querySelector("#pixel-height").value);
+                const w   = parseInt(imgWidth.value);
+                const h   = parseInt(imgheight.value);
+                const siw = parseInt(pixelWidth.value);
+                const sih = parseInt(pixelHeight.value);
             
                 const values = [];
                 var min = 255;
