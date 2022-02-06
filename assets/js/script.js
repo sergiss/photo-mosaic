@@ -148,18 +148,15 @@ document.querySelector("#create-button").addEventListener('click', ()=> {
                 for(let x = 0; x < w; x ++) {
                     for(let y = 0; y < h; y ++) {
                         var index = map(values[w * y + x], min, max, 0, images.length - 1);         
-                        index = Math.round(index);
-                        ctx.drawImage(images[index], x * siw, y * sih, siw, sih);
+                        ctx.drawImage(images[Math.round(index)], x * siw, y * sih, siw, sih);
                     }
                 }
             
                 if(document.querySelector("#bg-mode").checked) {
                     const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                    for (let i = 0; i < imgData.data.length; i += 4) {
-                        let colour = (imgData.data[i] + imgData.data[i + 1] + imgData.data[i + 2]) / 3;
-                        imgData.data[i] = colour;
-                        imgData.data[i + 1] = colour;
-                        imgData.data[i + 2] = colour;
+                    data = imgData.data;
+                    for (let i = 0; i < data.length; i += 4) {
+                        data[i] = data[i + 1] = data[i + 2] = ((data[i] + data[i + 1] + data[i + 2]) / 3);
                     }
                     ctx.putImageData(imgData, 0, 0);
                 }
