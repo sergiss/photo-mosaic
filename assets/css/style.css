@@ -8,15 +8,11 @@ html, body {
 
 body {
     margin: 0;
+    background-color: #cccce2;
 }
 
 h2 {
     margin: 5px;
-}
-
-canvas {
-    width: 640px;
-    height: 480px;
 }
 
 .input-button {
