@@ -99,3 +99,9 @@ input[type="number"] {
 a {
     margin-top: 20px;
 }
+
+@media screen and (max-width: 500px) {
+    .controls {
+        flex-direction: column;
+    }    
+}
