@@ -8,6 +8,7 @@ update();
 
 document.querySelector("#state1").style.display = 'none';
 document.querySelector("#state2").style.display = 'none';
+document.querySelector("#modal").style.display = 'none';
 
 // step 1
 const button1 = document.querySelector("#src-file");
@@ -61,6 +62,7 @@ button2.addEventListener("change", (e)=> {
                 }
                 fileReader.readAsDataURL(files[i]);
             });
+            promises.push(promise);
         }
         Promise.all(promises).then(()=> {
 
@@ -108,16 +110,32 @@ const scoreImage = (img) => {
 document.querySelector("#create-button").addEventListener('click', ()=> {
     if(state === 3) {
 
+        document.querySelector("#modal").style.display = 'flex';
+
+        makeMosaic().then(()=> {
+            document.querySelector("#modal").style.display = 'none';
+        }).catch((cause)=> {
+            console.log("Error: " + cause)
+            document.querySelector("#modal").style.display = 'none';
+        })
+
+    }
+});
+
+function makeMosaic() {
+
+    return new Promise((resolve)=> {
+
         const w = parseInt(document.querySelector("#image-width").value);
         const h = parseInt(document.querySelector("#image-height").value);
-
+    
         const siw = parseInt(document.querySelector("#pixel-width").value);
         const sih = parseInt(document.querySelector("#pixel-height").value);
-
+    
         const values = [];
         var min = 255;
         var max = 0;
-
+    
         // Get values
         var canvas = document.createElement("canvas");
         canvas.width  = w;
@@ -131,7 +149,7 @@ document.querySelector("#create-button").addEventListener('click', ()=> {
             if(min > value) min = value;
             if(max < value) max = value;
         }
-
+    
         canvas = document.createElement("canvas");
         ctx = canvas.getContext("2d");
         canvas.width  = w * siw;
@@ -144,7 +162,7 @@ document.querySelector("#create-button").addEventListener('click', ()=> {
                 ctx.drawImage(images[index], x * siw, y * sih, siw, sih);
             }
         }
-
+    
         if(document.querySelector("#bg-mode").checked) {
             const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             for (let i = 0; i < imgData.data.length; i += 4) {
@@ -155,15 +173,18 @@ document.querySelector("#create-button").addEventListener('click', ()=> {
             }
             ctx.putImageData(imgData, 0, 0);
         }
-
+    
         // Download
         var link = document.createElement('a');
         link.download = 'image.png';
         link.href = canvas.toDataURL()
         link.click();
 
-    }
-});
+        resolve();
+
+    });
+   
+}
 
 function map(value, fromMin, fromMax, toMin, toMax) {
     if (value < fromMin) value = fromMin;
