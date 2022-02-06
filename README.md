@@ -1,8 +1,8 @@
 # photo-mosaic
 :camera: Web app to create photo mosaic
 
-[Live Demo](https://sergiss.github.io/photo-collage/)
+[Live Demo](https://sergiss.github.io/photo-mosaic/)
 
-![Tileset Extruder](https://github.com/sergiss/photo-collage/blob/master/photo-collage.gif?raw=true)
+![Photo Mosaic](https://github.com/sergiss/photo-mosaic/blob/master/photo-mosaic.gif?raw=true)
 
 www.sergiosoriano.com
