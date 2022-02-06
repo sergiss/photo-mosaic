@@ -96,3 +96,6 @@ fieldset {
 input[type="number"] {
     text-align: left;
 }
+a {
+    margin-top: 20px;
+}
