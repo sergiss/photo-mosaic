@@ -23,7 +23,7 @@ button1.addEventListener("change", (e)=> {
                 state |= 1; 
                 update();
 
-                document.querySelector("#state1").src = '/assets/icons/ok.svg';
+                document.querySelector("#state1").src = 'assets/icons/ok.svg';
                 document.querySelector("#state1").style.display = 'block';
                 
             }).catch((reason)=> { // Error loading image
@@ -31,7 +31,7 @@ button1.addEventListener("change", (e)=> {
                 state &= ~1;
                 update();
 
-                document.querySelector("#state1").src = '/assets/icons/nok.svg';
+                document.querySelector("#state1").src = 'assets/icons/nok.svg';
                 document.querySelector("#state1").style.display = 'block';
 
             })
@@ -71,13 +71,13 @@ button2.addEventListener("change", (e)=> {
 
             state |= 2;
             update();
-            document.querySelector("#state2").src = '/assets/icons/ok.svg';
+            document.querySelector("#state2").src = 'assets/icons/ok.svg';
             document.querySelector("#state2").style.display = 'block';
 
         }).catch((reason)=> {
             state &= ~2;
             update();
-            document.querySelector("#state2").src = '/assets/icons/nok.svg';
+            document.querySelector("#state2").src = 'assets/icons/nok.svg';
             document.querySelector("#state2").style.display = 'block';
         });
     }
