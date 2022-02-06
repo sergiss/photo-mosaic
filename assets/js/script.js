@@ -112,79 +112,74 @@ document.querySelector("#create-button").addEventListener('click', ()=> {
 
         document.querySelector("#modal").style.display = 'flex';
 
-        makeMosaic().then(()=> {
-            document.querySelector("#modal").style.display = 'none';
-        }).catch((cause)=> {
-            console.log("Error: " + cause)
-            document.querySelector("#modal").style.display = 'none';
-        })
+        setTimeout(()=> {
 
+            try {
+
+                const w = parseInt(document.querySelector("#image-width").value);
+                const h = parseInt(document.querySelector("#image-height").value);
+            
+                const siw = parseInt(document.querySelector("#pixel-width").value);
+                const sih = parseInt(document.querySelector("#pixel-height").value);
+            
+                const values = [];
+                var min = 255;
+                var max = 0;
+            
+                // Get values
+                var canvas = document.createElement("canvas");
+                canvas.width  = w;
+                canvas.height = h;
+                var ctx = canvas.getContext("2d");
+                ctx.drawImage(srcImage, 0, 0, w, h);
+                const data = ctx.getImageData(0, 0, w, h).data;
+                for (let j = 0, i = 0; i < data.length; ++j, i += 4) {
+                    const value = (data[i] + data[i + 1] + data[i + 2]) / 3;
+                    values[j] = value;
+                    if(min > value) min = value;
+                    if(max < value) max = value;
+                }
+            
+                canvas = document.createElement("canvas");
+                ctx = canvas.getContext("2d");
+                canvas.width  = w * siw;
+                canvas.height = h * sih;
+                
+                for(let x = 0; x < w; x ++) {
+                    for(let y = 0; y < h; y ++) {
+                        var index = map(values[w * y + x], min, max, 0, images.length - 1);         
+                        index = Math.round(index);
+                        ctx.drawImage(images[index], x * siw, y * sih, siw, sih);
+                    }
+                }
+            
+                if(document.querySelector("#bg-mode").checked) {
+                    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    for (let i = 0; i < imgData.data.length; i += 4) {
+                        let colour = (imgData.data[i] + imgData.data[i + 1] + imgData.data[i + 2]) / 3;
+                        imgData.data[i] = colour;
+                        imgData.data[i + 1] = colour;
+                        imgData.data[i + 2] = colour;
+                    }
+                    ctx.putImageData(imgData, 0, 0);
+                }
+            
+                // Download
+                var link = document.createElement('a');
+                link.download = 'image.png';
+                link.href = canvas.toDataURL()
+                link.click();
+
+            } catch (error) {
+                alert("Error generating image!");
+            }
+
+            document.querySelector("#modal").style.display = 'none';
+
+        }, 100);
+       
     }
 });
-
-function makeMosaic() {
-
-    return new Promise((resolve)=> {
-
-        const w = parseInt(document.querySelector("#image-width").value);
-        const h = parseInt(document.querySelector("#image-height").value);
-    
-        const siw = parseInt(document.querySelector("#pixel-width").value);
-        const sih = parseInt(document.querySelector("#pixel-height").value);
-    
-        const values = [];
-        var min = 255;
-        var max = 0;
-    
-        // Get values
-        var canvas = document.createElement("canvas");
-        canvas.width  = w;
-        canvas.height = h;
-        var ctx = canvas.getContext("2d");
-        ctx.drawImage(srcImage, 0, 0, w, h);
-        const data = ctx.getImageData(0, 0, w, h).data;
-        for (let j = 0, i = 0; i < data.length; ++j, i += 4) {
-            const value = (data[i] + data[i + 1] + data[i + 2]) / 3;
-            values[j] = value;
-            if(min > value) min = value;
-            if(max < value) max = value;
-        }
-    
-        canvas = document.createElement("canvas");
-        ctx = canvas.getContext("2d");
-        canvas.width  = w * siw;
-        canvas.height = h * sih;
-        
-        for(let x = 0; x < w; x ++) {
-            for(let y = 0; y < h; y ++) {
-                var index = map(values[w * y + x], min, max, 0, images.length - 1);         
-                index = Math.round(index);
-                ctx.drawImage(images[index], x * siw, y * sih, siw, sih);
-            }
-        }
-    
-        if(document.querySelector("#bg-mode").checked) {
-            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < imgData.data.length; i += 4) {
-                let colour = (imgData.data[i] + imgData.data[i + 1] + imgData.data[i + 2]) / 3;
-                imgData.data[i] = colour;
-                imgData.data[i + 1] = colour;
-                imgData.data[i + 2] = colour;
-            }
-            ctx.putImageData(imgData, 0, 0);
-        }
-    
-        // Download
-        var link = document.createElement('a');
-        link.download = 'image.png';
-        link.href = canvas.toDataURL()
-        link.click();
-
-        resolve();
-
-    });
-   
-}
 
 function map(value, fromMin, fromMax, toMin, toMax) {
     if (value < fromMin) value = fromMin;
