@@ -95,24 +95,13 @@ const scoreImage = (img) => {
     canvas.height = h;
   
     ctx.drawImage(img, 0, 0, w, h);
+
     let result = 0;
     const data = ctx.getImageData(0, 0, w, h).data;
-
-    for(let index, value, x = 0; x < w; ++x) {
-        for(let y = 0; y < h; ++y) {
-            index = (w * y + x) << 2;
-
-            value = (
-                data[index    ] + 
-                data[index + 1] + 
-                data[index + 2]
-            ) / 3;
-    
-            result += value; 
-        }
+    for(let i = 0; i < data.length; i += 4) {
+        result += (data[i] + data[i + 1] + data[i + 2]) / 3;
     }
-    
-    return result / (w * h);
+    return result / data.length;
 }
 
 // step 3
@@ -136,18 +125,11 @@ document.querySelector("#create-button").addEventListener('click', ()=> {
         var ctx = canvas.getContext("2d");
         ctx.drawImage(srcImage, 0, 0, w, h);
         const data = ctx.getImageData(0, 0, w, h).data;
-        for(let index, value, x = 0; x < w; ++x) {
-            for(let y = 0; y < h; ++y) {
-                index = (w * y + x) << 2;
-                value = (
-                    data[index    ] + 
-                    data[index + 1] + 
-                    data[index + 2]
-                ) / 3;
-                values[w * y + x] = value; 
-                if(min > value) min = value;
-                if(max < value) max = value;
-            }
+        for (let j = 0, i = 0; i < data.length; ++j, i += 4) {
+            const value = (data[i] + data[i + 1] + data[i + 2]) / 3;
+            values[j] = value;
+            if(min > value) min = value;
+            if(max < value) max = value;
         }
 
         canvas = document.createElement("canvas");
@@ -158,14 +140,14 @@ document.querySelector("#create-button").addEventListener('click', ()=> {
         for(let x = 0; x < w; x ++) {
             for(let y = 0; y < h; y ++) {
                 var index = map(values[w * y + x], min, max, 0, images.length - 1);         
-                index = Math.floor(index)
+                index = Math.round(index);
                 ctx.drawImage(images[index], x * siw, y * sih, siw, sih);
             }
         }
 
         if(document.querySelector("#bg-mode").checked) {
             const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            for (i = 0; i < imgData.data.length; i += 4) {
+            for (let i = 0; i < imgData.data.length; i += 4) {
                 let colour = (imgData.data[i] + imgData.data[i + 1] + imgData.data[i + 2]) / 3;
                 imgData.data[i] = colour;
                 imgData.data[i + 1] = colour;
