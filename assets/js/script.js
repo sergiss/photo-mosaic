@@ -163,6 +163,17 @@ document.querySelector("#create-button").addEventListener('click', ()=> {
             }
         }
 
+        if(document.querySelector("#bg-mode").checked) {
+            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            for (i = 0; i < imgData.data.length; i += 4) {
+                let colour = (imgData.data[i] + imgData.data[i + 1] + imgData.data[i + 2]) / 3;
+                imgData.data[i] = colour;
+                imgData.data[i + 1] = colour;
+                imgData.data[i + 2] = colour;
+            }
+            ctx.putImageData(imgData, 0, 0);
+        }
+
         // Download
         var link = document.createElement('a');
         link.download = 'image.png';
